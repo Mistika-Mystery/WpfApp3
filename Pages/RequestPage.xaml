@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:WpfApp3.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="RequestPage" >
+      Title="RequestPage"   >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -48,14 +48,14 @@
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
-            <TextBlock Text="Поиск по ФИО или описанию:" Margin="0,0,10,0" />
+            <TextBlock Text="Поиск по ФИО:" Margin="0,0,10,0" />
             <TextBox x:Name="SerchTB" Width="150" Margin="0,0,50,0" TextChanged="SerchTB_TextChanged"/>
             <ComboBox Name="FiltrCB" Width="100" Margin="0,0,50,0" DisplayMemberPath="Name" SelectionChanged="FiltrCB_SelectionChanged" SelectedIndex="0"/>
             <ComboBox x:Name="SortCB" Width="100" SelectionChanged="SortCB_SelectionChanged" SelectedIndex="0">
                 <ComboBoxItem Content="Bez"/>
-                <ComboBoxItem Content="Ozhidaet"/>
-                <ComboBoxItem Content="v rabote"/>
-                <ComboBoxItem Content="Zaversh"/>
+                <ComboBoxItem Content="nov"/>
+                <ComboBoxItem Content="star"/>
+                
 
             </ComboBox>
         </StackPanel>

@@ -23,30 +23,30 @@ namespace WpfApp3.Pages
         public RequestPage()
         {
             InitializeComponent();
-            if( Flag.FlagRole == 1)
-            {
-                DGRequest.ItemsSource = AppEntities.GetContext().Request.ToList();
-            }
-            else if (Flag.FlagRole == 2)
-            {
-                DGRequest.ItemsSource = AppEntities.GetContext().Request.ToList();
-                delBtn.Visibility = Visibility.Collapsed;
-            }
-            else if (Flag.FlagRole == 4) 
-            {
-                DGRequest.ItemsSource = null;
-                delBtn.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                DGRequest.ItemsSource = AppEntities.GetContext().Request.Where( x => x.IdUser == Flag.FlagIdUser).ToList();
-                delBtn.Visibility = Visibility.Collapsed;
-            }
             var allStatus = AppEntities.GetContext().Status.ToList();
             allStatus.Insert(0, new Status
             {
                 Name = "все статусы"
             });
+            FiltrCB.ItemsSource = allStatus;
+
+             if (Flag.FlagRole == 2)
+            {
+               
+                delBtn.Visibility = Visibility.Collapsed;
+            }
+            else if (Flag.FlagRole == 4)
+            {
+          
+                delBtn.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+              
+                delBtn.Visibility = Visibility.Collapsed;
+            }
+
+
 
             Seeching();
         }
@@ -105,15 +105,45 @@ namespace WpfApp3.Pages
         }
         private void Seeching()
         {
-            var allPoisk = AppEntities.GetContext().Request.ToArray();
+            var allPoisk = AppEntities.GetContext().Request.ToList();
 
-            allPoisk = allPoisk.Where( x => x.User.Surname.ToLower().Contains(SerchTB.Text.ToLower())
-            || (x.User.Name ?? "").ToLower().Contains(SerchTB.Text.ToLower())
-            || (x.User.FhaterName ?? "").ToLower().Contains(SerchTB.Text.ToLower())).ToList();
+            // Применяем фильтрацию по пользователю
+             if (Flag.FlagRole == 4)
+            {
+                allPoisk = null;
+            }
+            if (Flag.FlagRole !=1 && Flag.FlagRole !=2) 
+            {
+                allPoisk = allPoisk.Where(x => x.IdUser == Flag.FlagIdUser).ToList();
+            }
 
- 
+            // Применяем фильтрацию по тексту
+            allPoisk = allPoisk.Where(x => x.User.Surname.ToLower().Contains(SerchTB.Text.ToLower())
+                || (x.User.Name ?? "").ToLower().Contains(SerchTB.Text.ToLower())
+                || (x.User.FhaterName ?? "").ToLower().Contains(SerchTB.Text.ToLower())).ToList();
 
+            // Применяем фильтрацию по статусу
+            if (FiltrCB.SelectedIndex != 0)
+            {
+                allPoisk = allPoisk.Where(s => s.Status == FiltrCB.SelectedValue).ToList();
+            }
 
+            // Применяем сортировку
+            switch (SortCB.SelectedIndex)
+            {
+                case 1:
+                    allPoisk = allPoisk.OrderBy(x => x.StartDate).ToList();
+                    break;
+                case 2:
+                    allPoisk = allPoisk.OrderByDescending(x => x.StartDate).ToList();
+                    break;
+            }
+
+            // Устанавливаем источник данных
+            DGRequest.ItemsSource = allPoisk;
         }
+
+
+
     }
 }

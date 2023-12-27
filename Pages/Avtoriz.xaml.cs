@@ -68,7 +68,7 @@ namespace WpfApp3.Pages
         private void GostBTN_Click(object sender, RoutedEventArgs e)
         {
             Flag.FlagRole = 4;
-            NavigationService.Navigate(new RequestPage());
+            NavigationService.Navigate(new NewReq(null));
         }
     }
 }

@@ -35,14 +35,20 @@ namespace WpfApp3.Pages
             else if (Flag.FlagRole == 4) 
             {
                 DGRequest.ItemsSource = null;
+                delBtn.Visibility = Visibility.Collapsed;
             }
             else
             {
                 DGRequest.ItemsSource = AppEntities.GetContext().Request.Where( x => x.IdUser == Flag.FlagIdUser).ToList();
                 delBtn.Visibility = Visibility.Collapsed;
-                
-
             }
+            var allStatus = AppEntities.GetContext().Status.ToList();
+            allStatus.Insert(0, new Status
+            {
+                Name = "все статусы"
+            });
+
+            Seeching();
         }
 
         private void ExLogBTN_Click(object sender, RoutedEventArgs e)
@@ -83,6 +89,31 @@ namespace WpfApp3.Pages
            
         }
 
-     
+        private void SerchTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Seeching();
+        }
+
+        private void FiltrCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Seeching();
+        }
+
+        private void SortCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Seeching();
+        }
+        private void Seeching()
+        {
+            var allPoisk = AppEntities.GetContext().Request.ToArray();
+
+            allPoisk = allPoisk.Where( x => x.User.Surname.ToLower().Contains(SerchTB.Text.ToLower())
+            || (x.User.Name ?? "").ToLower().Contains(SerchTB.Text.ToLower())
+            || (x.User.FhaterName ?? "").ToLower().Contains(SerchTB.Text.ToLower())).ToList();
+
+ 
+
+
+        }
     }
 }
